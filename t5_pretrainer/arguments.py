@@ -52,7 +52,8 @@ class Arguments:
     logging_steps: int = field(default=50)
     max_steps: int = field(default=-1)
     epochs: int = field(default=3)
-    local_rank: int = field(default=-1)
+    #-1
+    local_rank: int = field(default=0)
     task_names: Optional[str] = field(default=None)
     #task_names: List[str] = field(default_factory=lambda: ["rank", "commit", "reg"]) # ["rank", "reg"] | ["rank", "commit", "reg"] | ["rank", "commit"] | ["rank"]
     ln_to_weight: Dict[str, float] = field(default_factory=lambda:   {"rank": 1.0, "commit": 1.0, "reg": 0.2}) # {"rank": 1.0, "reg": 0.002} | {"rank": 1.0, "commit": 1.0, "reg": 0.002} | {"rank": 1.0, "commit": 1.0} | {"rank": 1.0}
@@ -154,7 +155,7 @@ class EvalArguments:
     model_name_or_path: str = field(default="t5-base")
     max_length: int = field(default=256)
     index_retrieve_batch_size: int = field(default=256)
-    local_rank: int = field(default=-1)
+    local_rank: int = field(default=0)
     task: str = field(default="")
     topk: int = field(default=1000)
     q_collection_paths: List[str] = field(default_factory=lambda: ["/home/ec2-user/quic-efs/user/hansizeng/work/data/msmarco/TREC_DL_2019/queries_2019/",

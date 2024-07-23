@@ -14,7 +14,7 @@ teacher_score_path=$model_dir/all_train/MSMARCO_TRAIN/qrel_added_qid_docids_teac
 run_name=t5_docid_gen_encoder_1
 output_dir="./$experiment_dir/"
 
-python -m torch.distributed.launch --nproc_per_node=8 -m t5_pretrainer.main \
+python -m torch.distributed.launch --nproc_per_node=2 -m t5_pretrainer.main \
         --epochs=50 \
         --run_name=$run_name \
         --learning_rate=1e-4 \

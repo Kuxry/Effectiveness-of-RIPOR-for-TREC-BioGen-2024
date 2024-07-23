@@ -16,7 +16,7 @@ pretrained_path=$model_dir/no_share_checkpoint/
 run_name=t5seq_aq_encoder_seq2seq_0
 
 # train
-python -m torch.distributed.launch --nproc_per_node=8 -m t5_pretrainer.main \
+python -m torch.distributed.launch --nproc_per_node=2 -m t5_pretrainer.main \
         --max_steps=250_000 \
         --run_name=$run_name  \
         --learning_rate=1e-3 \
@@ -52,7 +52,7 @@ run_name=t5seq_aq_encoder_seq2seq_1
 # also need to be changed by condition
 teacher_score_path=$data_dir/out/MSMARCO_TRAIN/qrel_added_qid_docids_teacher_scores.train.json
 
-python -m torch.distributed.launch --nproc_per_node=8 -m t5_pretrainer.main \
+python -m torch.distributed.launch --nproc_per_node=2 -m t5_pretrainer.main \
         --epochs=150 \
         --run_name=$run_name \
         --learning_rate=1e-4 \

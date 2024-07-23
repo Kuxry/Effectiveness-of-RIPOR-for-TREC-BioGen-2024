@@ -1,6 +1,7 @@
 #!/bin/bash
 
-task=t5seq_aq_retrieve_docids_use_sub_smtid
+#task=t5seq_aq_retrieve_docids_use_sub_smtid
+task=all_aq_pipline
 data_root_dir=./data/msmarco-full
 collection_path=$data_root_dir/full_collection/
 q_collection_paths='["./data/msmarco-full/TREC_DL_2019/queries_2019/","./data/msmarco-full/TREC_DL_2020/queries_2020/","./data/msmarco-full/dev_queries/"]'
@@ -16,7 +17,8 @@ if [ $task = all_aq_pipline ]; then
     mmap_dir=$model_dir/mmap
     out_dir=$model_dir/aq_out
 
-    python -m torch.distributed.launch --nproc_per_node=8 -m t5_pretrainer.evaluate \
+    #
+    python -m torch.distributed.launch --nproc_per_node=2 -m t5_pretrainer.evaluate \
     --pretrained_path=$pretrained_path \
     --index_dir=$mmap_dir \
     --task=mmap \
@@ -94,7 +96,7 @@ elif [ $task = all_pipline ]; then
     index_dir=$model_dir/index
     out_dir=$model_dir/out
 
-    python -m torch.distributed.launch --nproc_per_node=8 -m t5_pretrainer.evaluate \
+    python -m torch.distributed.launch --nproc_per_node=2 -m t5_pretrainer.evaluate \
     --pretrained_path=$pretrained_path \
     --index_dir=$index_dir \
     --out_dir=$out_dir \
@@ -115,7 +117,7 @@ elif [ $task = all_pipline ]; then
     --q_collection_paths=$q_collection_paths \
     --eval_qrel_path=$eval_qrel_path
 elif [ $task = "t5seq_aq_get_qid_to_smtid_rankdata" ]; then 
-    export CUDA_VISIBLE_DEVICES=0,1,2,3
+    export CUDA_VISIBLE_DEVICES=0,1
     echo "task: $task"
     data_dir="./$experiment_dir/t5_docid_gen_encoder_1"
     docid_to_smtid_path=$data_dir/aq_smtid/docid_to_smtid.json 
@@ -128,7 +130,7 @@ elif [ $task = "t5seq_aq_get_qid_to_smtid_rankdata" ]; then
     for max_new_token in 4 8 16
     do
         out_dir=$model_dir/sub_smtid_"${max_new_token}"_out/
-        python -m torch.distributed.launch --nproc_per_node=4 -m t5_pretrainer.evaluate \
+        python -m torch.distributed.launch --nproc_per_node=2 -m t5_pretrainer.evaluate \
             --pretrained_path=$pretrained_path \
             --out_dir=$out_dir \
             --task=$task \
@@ -160,7 +162,7 @@ elif [ $task = "t5seq_aq_get_qid_to_smtid_rankdata" ]; then
     do 
         qid_smtid_docids_path=$model_dir/sub_smtid_"$max_new_token"_out/qid_smtid_docids.train.json
 
-        python -m torch.distributed.launch --nproc_per_node=8 -m t5_pretrainer.rerank \
+        python -m torch.distributed.launch --nproc_per_node=2 -m t5_pretrainer.rerank \
             --train_queries_path=$train_queries_path \
             --collection_path=$collection_path \
             --model_name_or_path=cross-encoder/ms-marco-MiniLM-L-6-v2 \
@@ -174,7 +176,7 @@ elif [ $task = "t5seq_aq_get_qid_to_smtid_rankdata" ]; then
             --task=cross_encoder_rerank_for_qid_smtid_docids_2
     done
 elif [ $task = "t5seq_aq_retrieve_docids_use_sub_smtid" ]; then 
-    export CUDA_VISIBLE_DEVICES=0,1,2,3
+    export CUDA_VISIBLE_DEVICES=0,1
     echo "task: $task"
     data_dir="./$experiment_dir/t5_docid_gen_encoder_1"
     docid_to_smtid_path=$data_dir/aq_smtid/docid_to_smtid.json 
@@ -188,7 +190,7 @@ elif [ $task = "t5seq_aq_retrieve_docids_use_sub_smtid" ]; then
     python -m t5_pretrainer.aq_preprocess.build_list_smtid_to_nextids \
         --docid_to_smtid_path=$docid_to_smtid_path
 
-    python -m torch.distributed.launch --nproc_per_node=4 -m t5_pretrainer.evaluate \
+    python -m torch.distributed.launch --nproc_per_node=2 -m t5_pretrainer.evaluate \
         --pretrained_path=$pretrained_path \
         --out_dir=$out_dir \
         --task=t5seq_aq_retrieve_docids \

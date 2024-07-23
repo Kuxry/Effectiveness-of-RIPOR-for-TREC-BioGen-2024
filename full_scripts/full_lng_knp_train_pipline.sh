@@ -25,7 +25,7 @@ run_name=t5seq_aq_encoder_seq2seq_1_lng_knp_mnt_"$max_new_token"_dcy_"$decay"
 
 echo $teacher_score_path
 
-python -m torch.distributed.launch --nproc_per_node=8 -m t5_pretrainer.main \
+python -m torch.distributed.launch --nproc_per_node=2 -m t5_pretrainer.main \
         --epochs=120 \
         --run_name=$run_name \
         --learning_rate=1e-4 \
@@ -79,7 +79,7 @@ do
     teacher_score_path=$teacher_score_dir/lng_knp_sub_smtid_train_decay"$decay"/lng_knp_qid_smtids_scores_"$max_new_token".train.json
     run_name=t5seq_aq_encoder_seq2seq_1_lng_knp_mnt_"$max_new_token"_dcy_"$decay"
 
-    python -m torch.distributed.launch --nproc_per_node=7 -m t5_pretrainer.main \
+    python -m torch.distributed.launch --nproc_per_node=2 -m t5_pretrainer.main \
             --epochs=120 \
             --run_name=$run_name \
             --learning_rate=1e-4 \
