@@ -1,7 +1,7 @@
 #!/bin/bash
-
 #task=t5seq_aq_retrieve_docids_use_sub_smtid
-task=all_aq_pipline
+#task=all_aq_pipline
+task=retrieve_train_queries
 data_root_dir=./data/msmarco-full
 collection_path=$data_root_dir/full_collection/
 q_collection_paths='["./data/msmarco-full/TREC_DL_2019/queries_2019/","./data/msmarco-full/TREC_DL_2020/queries_2020/","./data/msmarco-full/dev_queries/"]'
@@ -50,7 +50,10 @@ if [ $task = all_aq_pipline ]; then
         --M=32 \
         --bits=8
 
-    python -m t5_pretrainer.aq_preprocss.change_embed_layer \
+
+    #python -m t5_pretrainer/aq_preprocss/change_embed_layer \
+    #python -m t5_pretrainer.aq_preprocss.change_embed_layer \
+    python -m t5_pretrainer.change_embed_layer \
         --model_dir=$model_dir
 
 elif [ $task = aq_to_flat_index_search_evaluate ]; then 
@@ -136,7 +139,7 @@ elif [ $task = "t5seq_aq_get_qid_to_smtid_rankdata" ]; then
             --task=$task \
             --docid_to_smtid_path=$docid_to_smtid_path \
             --topk=100 \
-            --batch_size=4 \
+            --=4 \
             --train_query_dir=$train_query_dir \
             --max_new_token=$max_new_token
 

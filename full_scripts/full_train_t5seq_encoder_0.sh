@@ -15,7 +15,8 @@ output_dir="./$experiment_dir/"
 
 
 #--nproc_per_node=8
-python -m torch.distributed.launch --nproc_per_node=2 -m t5_pretrainer.main \
+#python -m torch.distributed.launch
+torchrun --nproc_per_node=2 -m t5_pretrainer.main \
         --epochs=50 \
         --run_name=$run_name \
         --learning_rate=1e-4 \
@@ -31,4 +32,4 @@ python -m torch.distributed.launch --nproc_per_node=2 -m t5_pretrainer.main \
         --max_length=128 \
         --per_device_train_batch_size=64 \
         --queries_path=$queries_path \
-        --pretrained_path=$pretrained_path 
+        --pretrained_path=$pretrained_path

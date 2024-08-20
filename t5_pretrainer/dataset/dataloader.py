@@ -36,7 +36,7 @@ class CollectionDataLoader(DataLoaderWrapper):
                                            truncation="longest_first",  # truncates to self.max_length
                                            max_length=self.max_length,
                                            return_attention_mask=True)
-        return {**{k: torch.tensor(v) for k, v in processed_passage.items()},
+        return {**{k:  torch.tensor(v)  for k, v in processed_passage.items()},
                 "id": torch.tensor([int(i) for i in id_], dtype=torch.long)}
     
 class RerankforT5SeqAQLoader(DataLoaderWrapper):
@@ -75,7 +75,7 @@ class CollectionDataWithDocIDLoader(DataLoaderWrapper):
                                            max_length=self.max_length,
                                            return_attention_mask=True)
         processed_passage.update({"decoder_input_ids": torch.LongTensor(list(smtid))})
-        return {**{k: torch.tensor(v) for k, v in processed_passage.items()},
+        return {**{k:  torch.tensor(v)   for k, v in processed_passage.items()},
                 "id": torch.tensor([int(i) for i in id_], dtype=torch.long)}
 
 class CollectionAQLoader(DataLoaderWrapper):
