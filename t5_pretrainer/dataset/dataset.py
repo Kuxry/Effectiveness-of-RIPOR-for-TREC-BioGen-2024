@@ -438,7 +438,8 @@ class LngKnpMarginMSEforT5SeqAQDataset(Dataset):
                 tmp_docids = list(self.docid_to_smtid.keys())
                 assert self.docid_to_smtid[tmp_docids[0]][0] == -1, self.docid_to_smtid[tmp_docids[0]]
             else:
-                self.docid_to_smtid = None 
+                self.docid_to_smtid = None
+
 
         # sanity check 
         smtid_len = len(self.examples[0]["smtids"][0].split("_"))
@@ -526,6 +527,7 @@ class LngKnpMarginMSEforT5SeqAQDataset(Dataset):
 
 class Seq2SeqForT5SeqAQDataset(Dataset):
     def __init__(self, example_path, docid_to_smtid_path):
+
         with open(docid_to_smtid_path) as fin:
             docid_to_smtid = ujson.load(fin)
 
@@ -534,8 +536,16 @@ class Seq2SeqForT5SeqAQDataset(Dataset):
             for i, line in tqdm(enumerate(fin)):
                 example = ujson.loads(line)
                 docid, query = example["docid"], example["query"]
+
+                # 检查 docid 是否在 docid_to_smtid 中
+                if docid not in docid_to_smtid:
+                    #print(f"Warning: docid {docid} not found in docid_to_smtid. Skipping this example.")
+                    continue  # 跳过当前的 example
+
                 smtid = docid_to_smtid[docid]
                 self.examples.append((query, smtid))
+        print(f"Total valid examples loaded: {len(self.examples)}")
+
     def __len__(self):
         return len(self.examples)
     
@@ -620,7 +630,7 @@ class MarginMSEforPretrainDataset(Dataset):
                  docid_to_smtid_path):
         self.document_dataset = CollectionDatasetPreLoad(document_dir, id_style="content_id")
         self.query_dataset = CollectionDatasetPreLoad(query_dir, id_style="content_id")
-        
+
         self.examples = []
         with open(dataset_path) as fin:
             for line in fin:

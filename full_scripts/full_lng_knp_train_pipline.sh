@@ -4,16 +4,21 @@ experiment_dir=experiments-full-t5seq-aq
 
 # when max_new_token=4
 task=t5seq_aq_encoder_margin_mse_sub_smtid
-data_root_dir=./data/msmarco-full
+#data_root_dir=./data/msmarco-full
+#collection_path=$data_root_dir/full_collection/
+#queries_path=./data/msmarco-full/all_train_queries/train_queries
+data_root_dir=./data2
 collection_path=$data_root_dir/full_collection/
-queries_path=./data/msmarco-full/all_train_queries/train_queries
+queries_path=./data2/train_queries
+
 
 data_dir="./$experiment_dir/t5_docid_gen_encoder_1"
 docid_to_smtid_path=$data_dir/aq_smtid/docid_to_smtid.json
 output_dir="./$experiment_dir/"
 
 # need to change for every experiment
-model_dir="./$experiment_dir/t5seq_aq_encoder_seq2seq_1"
+#model_dir="./$experiment_dir/t5seq_aq_encoder_seq2seq_1"
+model_dir="./$experiment_dir/t5seq_aq_encoder_seq2seq_new1"
 pretrained_path=$model_dir/checkpoint
 
 # also need to be changed by condition

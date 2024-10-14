@@ -154,10 +154,10 @@ class EvalArguments:
     flat_index_dir: str = field(default=None)
     model_name_or_path: str = field(default="t5-base")
     max_length: int = field(default=256)
-    index_retrieve_batch_size: int = field(default=256)
+    index_retrieve_batch_size: int = field(default=400)
     local_rank: int = field(default=0)
     task: str = field(default="")
-    topk: int = field(default=1000)
+    topk: int = field(default=20)
     q_collection_paths: List[str] = field(default_factory=lambda: ["/home/ec2-user/quic-efs/user/hansizeng/work/data/msmarco/TREC_DL_2019/queries_2019/",
                           "/home/ec2-user/quic-efs/user/hansizeng/work/data/msmarco/TREC_DL_2020/queries_2020/",
                           "/home/ec2-user/quic-efs/user/hansizeng/work/data/msmarco/dev_queries/"])
@@ -200,7 +200,7 @@ class EvalArguments:
     #    "TREC_DL_2020": "/home/ec2-user/quic-efs/user/hansizeng/work/t5_pretrainer/t5_pretrainer/experiments-1M-t5seq-aq/t5seq_aq_encoder_seq2seq_1_lng_knp_self_mnt_32_dcy_2/out_docid_from_sub_4_top2000/TREC_DL_2020/run.json"
     #})
     batch_size: Optional[int] = field(default=64)
-    topk: int = field(default=200)
+    topk: int = field(default=20)
     apply_log_softmax_for_scores: Optional[bool] = field(default=False)
     max_new_token: Optional[int] = field(default=None)
     max_new_token_for_docid: int = field(default=32)

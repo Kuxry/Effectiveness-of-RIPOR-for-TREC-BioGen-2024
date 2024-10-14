@@ -51,7 +51,7 @@ def constrained_decode(model,
                         device, 
                         out_dir,
                         local_rank,
-                        topk=100):
+                        topk=20):
     
     qid_to_rankdata = {}
     for i, batch in enumerate(tqdm(dataloader,total=len(dataloader))):
@@ -92,7 +92,7 @@ def constrained_decode_doc(model,
                         device, 
                         out_dir,
                         local_rank,
-                        topk=100,
+                        topk=20,
                         apply_log_softmax_for_scores=False):
     
     qid_to_rankdata = {}
@@ -139,7 +139,7 @@ def constrained_decode_smtid(model,
                         device, 
                         out_dir,
                         local_rank,
-                        topk=100,
+                        topk=20,
                         apply_log_softmax_for_scores=False):
     
     qid_to_rankdata = {}
@@ -239,10 +239,14 @@ def retrieve(args):
 
     batch_size = 128
 
-    if len(args.q_collection_paths) == 1:
-        args.q_collection_paths = ujson.loads(args.q_collection_paths[0])
+    # if len(args.q_collection_paths) == 1:
+    #     args.q_collection_paths = ujson.loads(args.q_collection_paths[0])
+    #     print(args.q_collection_paths)
+
+    if isinstance(args.q_collection_paths, str):
+        args.q_collection_paths = [args.q_collection_paths]
         print(args.q_collection_paths)
-        
+
     for data_dir in args.q_collection_paths:
         if "t5_docid_gen_encoder" in args.pretrained_path:
             q_collection = CollectionDatasetWithDocIDPreLoad(data_dir=data_dir, id_style="row_id",
@@ -309,10 +313,13 @@ def aq_evaluate(args):
     if not os.path.exists(args.out_dir):
         os.mkdir(args.out_dir)
 
-    if len(args.q_collection_paths) == 1:
-        args.q_collection_paths = ujson.loads(args.q_collection_paths[0])
+    # if len(args.q_collection_paths) == 1:
+    #     args.q_collection_paths = ujson.loads(args.q_collection_paths[0])
+    #     print(args.q_collection_paths)
+    if isinstance(args.q_collection_paths, str):
+        args.q_collection_paths = [args.q_collection_paths]
         print(args.q_collection_paths)
-        
+
     for data_dir in args.q_collection_paths:
         q_collection = CollectionDatasetWithDocIDPreLoad(data_dir=data_dir, id_style="row_id",
                                                             tid_to_smtid_path=None,
@@ -323,7 +330,7 @@ def aq_evaluate(args):
                                         shuffle=False, num_workers=4)
     
         aq_indexer.search(q_loader, 
-                          topk=200, 
+                          topk=20,
                           index_path=os.path.join(args.index_dir, "model.index"),
                           out_dir=os.path.join(args.out_dir, get_dataset_name(data_dir)),
                           index_ids_path=os.path.join(args.mmap_dir, "text_ids.tsv")
@@ -373,10 +380,14 @@ def aq_to_flat_index_search_evaluate(args):
     if not os.path.exists(args.out_dir):
         os.mkdir(args.out_dir)
 
-    if len(args.q_collection_paths) == 1:
-        args.q_collection_paths = ujson.loads(args.q_collection_paths[0])
+    # if len(args.q_collection_paths) == 1:
+    #     args.q_collection_paths = ujson.loads(args.q_collection_paths[0])
+    #     print(args.q_collection_paths)
+
+    if isinstance(args.q_collection_paths, str):
+        args.q_collection_paths = [args.q_collection_paths]
         print(args.q_collection_paths)
-        
+
     for data_dir in args.q_collection_paths:
         q_collection = CollectionDatasetWithDocIDPreLoad(data_dir=data_dir, id_style="row_id",
                                                             tid_to_smtid_path=None,
@@ -387,7 +398,7 @@ def aq_to_flat_index_search_evaluate(args):
                                         shuffle=False, num_workers=4)
         
         rq_indexer.flat_index_search(q_loader, 
-                                     topk=200, 
+                                     topk=20,
                                      index_path=index_path, 
                                      out_dir=os.path.join(args.out_dir, get_dataset_name(data_dir)))
     # evaluate
@@ -407,8 +418,13 @@ def t5seq_aq_retrieve_docids(args):
             with open(list_smtid_to_nextids_path, "rb") as fin:
                 list_smtid_to_nextids = pickle.load(fin)
     else:
-        # create prefix_constrain logit processor
-        list_smtid_to_nextids = [dict() for _ in range(len(docid_to_smtids["0"])-1)]
+        # create prefix_constrain logit processor from 0
+        # list_smtid_to_nextids = [dict() for _ in range(len(docid_to_smtids["0"])-1)]
+
+        # 获取第一个键并初始化 list_smtid_to_nextids
+        first_key = next(iter(docid_to_smtids))
+        list_smtid_to_nextids = [dict() for _ in range(len(docid_to_smtids[first_key]) - 1)]
+
         for docid, smtids in tqdm(docid_to_smtids.items(), total=len(docid_to_smtids)):
             for i in range(len(smtids)-1):
                 cur_smtid = "_".join([str(x) for x in smtids[:i+1]])
@@ -454,9 +470,14 @@ def t5seq_aq_retrieve_docids(args):
             os.mkdir(args.out_dir)
 
     # start to retrieve
-    if len(args.q_collection_paths) == 1:
-        args.q_collection_paths = ujson.loads(args.q_collection_paths[0])
+    # if len(args.q_collection_paths) == 1:
+    #     args.q_collection_paths = ujson.loads(args.q_collection_paths[0])
+    #     print(args.q_collection_paths)
+
+    if isinstance(args.q_collection_paths, str):
+        args.q_collection_paths = [args.q_collection_paths]
         print(args.q_collection_paths)
+
     for data_dir in args.q_collection_paths:
         dev_dataset = CollectionDatasetWithDocIDPreLoad(data_dir=data_dir, id_style="row_id",
                                               tid_to_smtid_path=None, add_prefix=True, is_query=True)
@@ -487,11 +508,16 @@ def t5seq_aq_retrieve_docids(args):
                             apply_log_softmax_for_scores=args.apply_log_softmax_for_scores)
 
 def t5seq_aq_retrieve_docids_2(args):
-    if len(args.q_collection_paths) == 1:
-        args.q_collection_paths = ujson.loads(args.q_collection_paths[0])
+    # if len(args.q_collection_paths) == 1:
+    #     args.q_collection_paths = ujson.loads(args.q_collection_paths[0])
+    #     print(args.q_collection_paths)
+    if isinstance(args.q_collection_paths, str):
+        args.q_collection_paths = [args.q_collection_paths]
         print(args.q_collection_paths)
+
     for data_dir in args.q_collection_paths:
         out_dir = os.path.join(args.out_dir, get_dataset_name(data_dir))
+        print(f"out_dir: {out_dir}")  # 打印 out_dir 路径
 
         # remove old 
         if os.path.exists(os.path.join(out_dir, "run.json")):
@@ -501,6 +527,8 @@ def t5seq_aq_retrieve_docids_2(args):
         # merge
         qid_to_rankdata = {}
         sub_paths = [p for p in os.listdir(out_dir) if "run" in p]
+        print(f"sub_paths: {sub_paths}")  # 打印 sub_paths 的内容
+
         assert len(sub_paths) == torch.cuda.device_count()
         for sub_path in sub_paths:
             with open(os.path.join(out_dir, sub_path)) as fin:
@@ -533,8 +561,14 @@ def t5seq_aq_get_qid_to_smtid_rankdata(args):
     with open(args.docid_to_smtid_path) as fin:
         docid_to_smtids = ujson.load(fin)
 
-    # create prefix_constrain logit processor
-    list_smtid_to_nextids = [dict() for _ in range(len(docid_to_smtids["0"])-1)]
+    # create prefix_constrain logit processor from 0
+    #list_smtid_to_nextids = [dict() for _ in range(len(docid_to_smtids["0"])-1)]
+
+    # 获取第一个键并初始化 list_smtid_to_nextids
+    first_key = next(iter(docid_to_smtids))
+    list_smtid_to_nextids = [dict() for _ in range(len(docid_to_smtids[first_key])-1)]
+
+
     for docid, smtids in tqdm(docid_to_smtids.items(), total=len(docid_to_smtids)):
         for i in range(len(smtids)-1):
             cur_smtid = "_".join([str(x) for x in smtids[:i+1]])

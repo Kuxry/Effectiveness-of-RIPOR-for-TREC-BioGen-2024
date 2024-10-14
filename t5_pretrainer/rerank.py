@@ -621,7 +621,7 @@ def cross_encoder_rerank_for_qid_smtid_docids(args):
     out_path = path_prefix + f"_teacher_score_{args.local_rank}.train.json"
     with open(out_path, "w") as fout:
         ujson.dump(qid_to_smtid_to_rankdata, fout)
-    
+
 def cross_encoder_rerank_for_qid_smtid_docids_2(args):
     if os.path.exists(os.path.join(args.out_dir, "qid_smtid_docids_teacher_score.train.json")):
         print("old qid_smtid_docids_teacher_score.train.json exisit.")
@@ -629,6 +629,9 @@ def cross_encoder_rerank_for_qid_smtid_docids_2(args):
 
     qid_to_smtid_to_rerank = {}
     sub_rerank_paths = [p for p in os.listdir(args.out_dir) if "qid_smtid_docids_teacher_score" in p]
+
+    print(f"sub_rerank_paths: {sub_rerank_paths}")
+    print(f"Number of GPUs: {torch.cuda.device_count()}")
     assert len(sub_rerank_paths) == torch.cuda.device_count()
     for sub_path in sub_rerank_paths:
         with open(os.path.join(args.out_dir, sub_path)) as fin:

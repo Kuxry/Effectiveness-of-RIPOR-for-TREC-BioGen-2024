@@ -20,7 +20,13 @@ if __name__ == "__main__":
         # create prefix_constrain logit processor
         with open(args.docid_to_smtid_path) as fin:
             docid_to_smtids = ujson.load(fin)
-        list_smtid_to_nextids = [dict() for _ in range(len(docid_to_smtids["0"])-1)]
+        # create prefix_constrain logit processor from 0
+        # list_smtid_to_nextids = [dict() for _ in range(len(docid_to_smtids["0"])-1)]
+
+        # 获取第一个键并初始化 list_smtid_to_nextids
+        first_key = next(iter(docid_to_smtids))
+        list_smtid_to_nextids = [dict() for _ in range(len(docid_to_smtids[first_key]) - 1)]
+
         for docid, smtids in tqdm(docid_to_smtids.items(), total=len(docid_to_smtids)):
             for i in range(len(smtids)-1):
                 cur_smtid = "_".join([str(x) for x in smtids[:i+1]])

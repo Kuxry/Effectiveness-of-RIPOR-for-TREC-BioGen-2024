@@ -34,7 +34,7 @@ class HNSWIndexer:
         self.model = model
         self.model.eval()
         self.args = args
-    def store_embs():
+    def store_embs(self):
         raise NotImplementedError
     
     @staticmethod
