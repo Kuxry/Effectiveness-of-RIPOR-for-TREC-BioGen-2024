@@ -1,4 +1,5 @@
-#Effectiveness of RIPOR for TREC BioGen(QA) in 2024
+# Effectiveness of RIPOR for TREC BioGen(QA) in 2024
+
 Recent research has shown that transformer networks can be used as differentiable search indexes by representing each document as a sequence of document ID tokens. These generative retrieval models cast the retrieval problem into a document ID generation problem for each given query. Despite their elegant design, existing generative retrieval models often underperform when applied to large-scale, real-world collections, which has raised concerns about their practical applicability.
 
 In my work on the TREC 2024 BioGen task, I will use the RIPOR model to assess the feasibility of generative retrieval models in handling large-scale datasets. The 2023 PubMed dataset will be utilized to test the RIPOR model's effectiveness. RIPOR introduces several advancements in retrieval tasks, particularly by leveraging transformer networks for efficient document retrieval. However, a significant limitation of the RIPOR model is its inability to combine the most relevant documents into a complete answer based on the query’s question. It can only retrieve relevant documents but does not synthesize or structure them into a cohesive response.
