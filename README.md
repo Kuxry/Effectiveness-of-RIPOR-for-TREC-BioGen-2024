@@ -17,7 +17,7 @@ The **RIPOR (Relevance Information Propagation for Optimal Retrieval)** model is
 Despite these advantages, RIPOR faces a critical limitation: it can only retrieve documents relevant to a given query. It cannot synthesize the retrieved documents to form a cohesive and complete answer, particularly in scenarios where the query asks for a structured, combined response. My current research aims to address this shortcoming by enhancing RIPOR's capabilities to generate complete answers based on multiple relevant documents.
 
 
-
+# My work on the TREC 2024 BioGen task
 In my work on the TREC 2024 BioGen task, I will use the RIPOR model to assess the feasibility of generative retrieval models in handling large-scale datasets. The 2023 PubMed dataset will be utilized to test the RIPOR model's effectiveness. RIPOR introduces several advancements in retrieval tasks, particularly by leveraging transformer networks for efficient document retrieval. However, a significant limitation of the RIPOR model is its inability to combine the most relevant documents into a complete answer based on the query’s question. It can only retrieve relevant documents but does not synthesize or structure them into a cohesive response.
 
 To address this limitation, my current work focuses on enhancing the RIPOR model’s capabilities by developing a method that not only retrieves relevant documents but also selects and combines the most relevant ones to provide a comprehensive answer to the query.
