@@ -7,7 +7,7 @@ from tqdm import tqdm  # 导入 tqdm 模块
 input_dir = "../data01"  # 替换为你的json文件存放路径
 train_output_file = "big_original_train_doc2_query.tsv"  # 训练集输出的tsv文件路径
 
-total_files = 1219  # 总文件数量
+total_files = 100  # 总文件数量
 sampled_files = int(total_files * 0.3)  # 抽取60%的文件数量
 
 # 随机抽取60%的文件

@@ -551,7 +551,7 @@ def t5seq_aq_retrieve_docids_2(args):
             sub_path = os.path.join(out_dir, sub_path)
             os.remove(sub_path)
 
-    evaluate(args)
+    #evaluate(args)
 
 def t5seq_aq_get_qid_to_smtid_rankdata(args):
     ddp_setup()

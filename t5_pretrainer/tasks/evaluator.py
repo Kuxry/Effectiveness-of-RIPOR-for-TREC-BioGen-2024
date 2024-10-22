@@ -98,7 +98,7 @@ class HNSWIndexer:
         query_embs = query_embs.astype(np.float32) if query_embs.dtype==np.float16 else query_embs
 
         index = faiss.read_index(index_path)
-        index = self._convert_index_to_gpu(index, list(range(8)), False)
+        index = self._convert_index_to_gpu(index, list(range(2)), False)
         idx_to_docid = self._read_text_ids(index_ids_path)
         # hnsw might reuturn -1 
         idx_to_docid[-1] = "0"
@@ -292,7 +292,7 @@ class ProductQuantizeIndexer:
         query_embs = query_embs.astype(np.float32) if query_embs.dtype==np.float16 else query_embs
 
         index = faiss.read_index(index_path)
-        index = self._convert_index_to_gpu(index, list(range(8)), False)
+        index = self._convert_index_to_gpu(index, list(range(2)), False)
         idx_to_docid = self._read_text_ids(index_ids_path)
         
         qid_to_rankdata = {}
@@ -425,7 +425,7 @@ class AddictvieQuantizeIndexer(ProductQuantizeIndexer):
         query_embs = query_embs.astype(np.float32) if query_embs.dtype==np.float16 else query_embs
 
         index = faiss.read_index(index_path)
-        #index = self._convert_index_to_gpu(index, list(range(8)), False)
+        index = self._convert_index_to_gpu(index, list(range(2)), False)
         idx_to_docid = self._read_text_ids(index_ids_path)
         
         qid_to_rankdata = {}
@@ -447,7 +447,7 @@ class AddictvieQuantizeIndexer(ProductQuantizeIndexer):
         query_embs = query_embs.astype(np.float32) if query_embs.dtype==np.float16 else query_embs
         
         index = faiss.read_index(index_path)
-        index = self._convert_index_to_gpu(index, list(range(8)), False)
+        index = self._convert_index_to_gpu(index, list(range(2)), False)
         
         nn_scores, nn_doc_ids = index.search(query_embs, topk)
 
@@ -711,7 +711,7 @@ class DenseRetriever:
 
         if index is None:
             index = faiss.read_index(self.index_path)
-            index = self._convert_index_to_gpu(index, list(range(8)), False)
+            index = self._convert_index_to_gpu(index, list(range(2)), False)
         
         nn_scores, nn_doc_ids = self._index_retrieve(index, query_embs, topk, batch=128)
         
