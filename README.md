@@ -1,8 +1,10 @@
-# Effectiveness of RIPOR for TREC BioGen(QA) in 2024
+# Leveraging Transfer Learning and Prefix-Based Optimization for Enhanced Generative Retrieval in PubMed Medical Information Systems
+
+## Effectiveness of RIPOR for TREC BioGen(QA) in 2024
 
 Recent research has shown that transformer networks can be used as differentiable search indexes by representing each document as a sequence of document ID tokens. These generative retrieval models cast the retrieval problem into a document ID generation problem for each given query. Despite their elegant design, existing generative retrieval models often underperform when applied to large-scale, real-world collections, which has raised concerns about their practical applicability.
 
-# Explanation of the RIPOR Model
+## Explanation of the RIPOR Model
 
 The **RIPOR (Relevance Information Propagation for Optimal Retrieval)** model is introduced in the paper *"Scalable and Effective Generative Information Retrieval."* This model represents an advanced approach to generative retrieval, which transforms the retrieval problem into a document ID generation task. RIPOR leverages transformer networks to treat each document as a sequence of tokens, generating document IDs based on query input.
 
