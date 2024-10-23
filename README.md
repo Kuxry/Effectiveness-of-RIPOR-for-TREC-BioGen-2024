@@ -1,4 +1,4 @@
-# Leveraging Transfer Learning and Prefix-Based Optimization for Enhanced Generative Retrieval in PubMed Medical Information Systems
+# Leveraging Transfer Learning and Prefix-Based Optimization for Enhanced Generative Retrieval in PubMed Medical Information
 
 ## Effectiveness of RIPOR for TREC BioGen(QA) in 2024
 
