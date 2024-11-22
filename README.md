@@ -23,3 +23,5 @@ Despite these advantages, RIPOR faces a critical limitation: it can only retriev
 In my work on the TREC 2024 BioGen task, I will use the RIPOR model to assess the feasibility of generative retrieval models in handling large-scale datasets. The 2023 PubMed dataset will be utilized to test the RIPOR model's effectiveness. RIPOR introduces several advancements in retrieval tasks, particularly by leveraging transformer networks for efficient document retrieval. However, a significant limitation of the RIPOR model is its inability to combine the most relevant documents into a complete answer based on the query’s question. It can only retrieve relevant documents but does not synthesize or structure them into a cohesive response.
 
 To address this limitation, my current work focuses on enhancing the RIPOR model’s capabilities by developing a method that not only retrieves relevant documents but also selects and combines the most relevant ones to provide a comprehensive answer to the query.
+
+![The workflow](images/image1.jpg)
