@@ -24,4 +24,4 @@ In my work on the TREC 2024 BioGen task, I will use the RIPOR model to assess th
 
 To address this limitation, my current work focuses on enhancing the RIPOR model’s capabilities by developing a method that not only retrieves relevant documents but also selects and combines the most relevant ones to provide a comprehensive answer to the query.
 
-![The workflow](images/image1.jpg)
+![The workflow](image/image1.jpg) 
